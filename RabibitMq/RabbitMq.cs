@@ -101,5 +101,23 @@ namespace livil_mq_microservice.RabibitMq
             var body = Encoding.UTF8.GetBytes(serialzedMessage);
             channel.BasicPublish("", _config.SenderChannel, true, null, body);
         }
+
+        /// <summary>
+        ///     pusges a single Message to the queueName
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="queuename"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <exception cref="ArgumentNullException"></exception>
+        public void PushMessageToQueue<T>(T message,string queuename)
+        {
+            if (string.IsNullOrEmpty(queuename)) throw new ArgumentNullException(nameof(queuename));
+            using var connection = _factory.CreateConnection();
+            using var channel = connection.CreateModel();
+            channel.QueueDeclare(queuename, false, false);
+            var serialzedMessage = JsonSerializer.Serialize(message);
+            var body = Encoding.UTF8.GetBytes(serialzedMessage);
+            channel.BasicPublish("", queuename, true, null, body);
+        }
     }
 }

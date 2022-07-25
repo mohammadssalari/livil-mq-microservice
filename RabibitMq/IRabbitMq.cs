@@ -22,6 +22,14 @@
         void PushMessageToQueue<T>(T message);
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="message"></param>
+        /// <param name="queuename"></param>
+        public void PushMessageToQueue<T>(T message, string queuename);
+
+        /// <summary>
         ///     is Raised if the Constructor Channelname recieves a Message
         /// </summary>
         event EventHandler OnDataRecieved;
