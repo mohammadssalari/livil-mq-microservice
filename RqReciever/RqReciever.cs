@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using livil_mq_microservice.Models;
 using livil_mq_microservice.RabibitMq;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client.Events;
 using RestSharp;
@@ -11,17 +12,17 @@ namespace livil_mq_microservice.RqReciever
     public class RqReciever : BackgroundService
     {
         private readonly IRabbitMq _rabbitMq;
-        private readonly IRecievingApiConfig _apiconfig;
+        private readonly RecievingApiConfig _apiconfig;
 
         /// <summary>
         /// This is the Constructor wich recieves the Configured RabbitMq as Dependency Injection as a Container
         /// </summary>
         /// <param name="rabbitMq"></param>
         /// <param name="apiconfig"></param>
-        public RqReciever(IRabbitMq rabbitMq, IRecievingApiConfig apiconfig)
+        public RqReciever(IRabbitMq rabbitMq, IOptions<RecievingApiConfig> apiconfig)
         {
             _rabbitMq = rabbitMq;
-            _apiconfig = apiconfig;
+            _apiconfig = apiconfig.Value;
         }
 
         //This Function Grabs the Event of the RabbitMq Service 
@@ -47,12 +48,11 @@ namespace livil_mq_microservice.RqReciever
 
         private void SendDataToApi(string content)
         {
-            var _baseurl = "http://irgendwas";
-            string _recource = "rew";
             var client = new RestClient(_apiconfig.BaseUrl);
             Method _method = Method.Post;
             var request = new RestRequest(_apiconfig.Resource, _method);
-            request.AddBody(JsonConvert.DeserializeObject<RqInputMessage>(content)!);
+            var sendmessage = JsonConvert.DeserializeObject<RqInputMessage>(content);
+            request.AddBody(sendmessage);
             var res = client.PostAsync(request);
             if (res.Result.IsSuccessful)
                 Log.Information("Sent Data to APi Successful");

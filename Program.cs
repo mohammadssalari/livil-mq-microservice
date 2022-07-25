@@ -27,8 +27,11 @@ namespace livil_mq_microservice
             var builder = WebApplication.CreateBuilder(options);
             builder.Host.UseWindowsService().UseSystemd();
 
-            builder.Services.Configure<RecievingApiConfig>(c => configuration.GetSection("SendAPI").Bind(c));
-            builder.Services.AddSingleton<IRecievingApiConfig, RecievingApiConfig>();
+            builder.Services.Configure<RecievingApiConfig>(c =>
+            {
+                configuration.GetSection("SendAPI").Bind(c);
+            });
+            //builder.Services.AddSingleton<RecievingApiConfig>();
             // Add services to the container.
             builder.Services.Configure<RabbitMqConfig>(c => configuration.GetSection("RabbitMq").Bind(c));
         //Dependency Injection for The RabbitMqImplementation

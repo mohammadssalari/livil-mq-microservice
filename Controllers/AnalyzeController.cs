@@ -19,7 +19,7 @@ namespace livil_mq_microservice.Controllers
         {
            Log.Information("Post Method Called");
             var random = new Random();
-            var splittetAndTrimmedText = postText.Split(new[] {'.', ',', '?'}).Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+            var splittetAndTrimmedText = postText.Split(new char[] {'.', ',', '?'}).Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
             var analyzedText = splittetAndTrimmedText.Skip(random.Next(splittetAndTrimmedText.Count()))
                 .FirstOrDefault();
             Log.Information("Analyzed Text = {text}",analyzedText);
