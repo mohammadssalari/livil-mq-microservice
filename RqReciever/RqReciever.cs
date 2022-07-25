@@ -50,7 +50,7 @@ namespace livil_mq_microservice.RqReciever
         {
             var client = new RestClient(_apiconfig.BaseUrl);
             Method _method = Method.Post;
-            var request = new RestRequest(_apiconfig.Resource, _method);
+            var request = new RestRequest(_apiconfig.Resource, _apiconfig.MyMethodType);
             var sendmessage = JsonConvert.DeserializeObject<RqInputMessage>(content);
             request.AddBody(sendmessage);
             var res = client.PostAsync(request);
