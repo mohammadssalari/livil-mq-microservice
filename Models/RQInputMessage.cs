@@ -2,11 +2,11 @@
 
 namespace livil_mq_microservice.Models
 {
-    public class RQInputMessage
+    public class RqInputMessage
     {
         [JsonProperty("reply_queue")]
-        public string Reply_Queue { get; set; }
+        public string? ReplyQueue { get; set; }
         [JsonProperty("content")]
-        public string Content { get; set; }
+        public string? Content { get; set; }
     }
 }

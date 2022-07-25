@@ -12,14 +12,12 @@ namespace livil_mq_microservice.RabibitMq
     /// </summary>
     public class RabbitMq : IRabbitMq
     {
+        //Globally Available in this Class 
         private readonly RabbitMqConfig _config;
-        private readonly EventingBasicConsumer? consumer;
-
-        private readonly ConnectionFactory factory;
-
-        private readonly IModel? receivingChannel;
-
-        private readonly IConnection? recievingConnection;
+        private readonly EventingBasicConsumer? _consumer;
+        private readonly ConnectionFactory _factory;
+        private readonly IModel? _receivingChannel;
+        private readonly IConnection? _recievingConnection;
 
         private IConnection ConnectionFactory { get; } = null!;
         /// <summary>
@@ -29,46 +27,46 @@ namespace livil_mq_microservice.RabibitMq
         public RabbitMq(RabbitMqConfig config)
         {
             _config = config;
-            factory = new ConnectionFactory
+            _factory = new ConnectionFactory
             {
                 HostName = config.HostName
             };
-            if (!string.IsNullOrEmpty(config.VirtualHost)) factory.VirtualHost = config.VirtualHost;
-            if (!string.IsNullOrEmpty(config.Password)) factory.Password = config.Password;
-            if (!string.IsNullOrEmpty(config.UserName)) factory.UserName = config.UserName;
-            ConnectionFactory = factory.CreateConnection();
-            recievingConnection = factory.CreateConnection();
-            receivingChannel = recievingConnection.CreateModel();
-            receivingChannel.QueueDeclare(config.RecieveChannel, false, false);
-            consumer = new EventingBasicConsumer(receivingChannel);
-            consumer.Received += (model, ea) => { OnDataRecieved?.Invoke(this, ea); };
-            receivingChannel.BasicConsume(config.RecieveChannel,
+            if (!string.IsNullOrEmpty(config.VirtualHost)) _factory.VirtualHost = config.VirtualHost;
+            if (!string.IsNullOrEmpty(config.Password)) _factory.Password = config.Password;
+            if (!string.IsNullOrEmpty(config.UserName)) _factory.UserName = config.UserName;
+            ConnectionFactory = _factory.CreateConnection();
+            _recievingConnection = _factory.CreateConnection();
+            _receivingChannel = _recievingConnection.CreateModel();
+            _receivingChannel.QueueDeclare(config.RecieveChannel, false, false);
+            _consumer = new EventingBasicConsumer(_receivingChannel);
+            _consumer.Received += (model, ea) => { OnDataRecieved?.Invoke(this, ea); };
+            _receivingChannel.BasicConsume(config.RecieveChannel,
                 true,
-                consumer);
+                _consumer);
         }
         /// <summary>
-        ///     For intializing via non DI
+        ///     For intializing via DI
         /// </summary>
         /// <param name="config"></param>
         public RabbitMq(IOptions<RabbitMqConfig> config)
         {
             _config = config.Value;
-            factory = new ConnectionFactory
+            _factory = new ConnectionFactory
             {
                 HostName = _config.HostName
             };
-            if (!string.IsNullOrEmpty(_config.VirtualHost)) factory.VirtualHost = _config.VirtualHost;
-            if (!string.IsNullOrEmpty(_config.Password)) factory.Password = _config.Password;
-            if (!string.IsNullOrEmpty(_config.UserName)) factory.UserName = _config.UserName;
-            ConnectionFactory = factory.CreateConnection();
-            recievingConnection = factory.CreateConnection();
-            receivingChannel = recievingConnection.CreateModel();
-            receivingChannel.QueueDeclare(_config.RecieveChannel, false, false);
-            consumer = new EventingBasicConsumer(receivingChannel);
-            consumer.Received += (model, ea) => { OnDataRecieved?.Invoke(this, ea); };
-            receivingChannel.BasicConsume(_config.RecieveChannel,
+            if (!string.IsNullOrEmpty(_config.VirtualHost)) _factory.VirtualHost = _config.VirtualHost;
+            if (!string.IsNullOrEmpty(_config.Password)) _factory.Password = _config.Password;
+            if (!string.IsNullOrEmpty(_config.UserName)) _factory.UserName = _config.UserName;
+            ConnectionFactory = _factory.CreateConnection();
+            _recievingConnection = _factory.CreateConnection();
+            _receivingChannel = _recievingConnection.CreateModel();
+            _receivingChannel.QueueDeclare(_config.RecieveChannel, false, false);
+            _consumer = new EventingBasicConsumer(_receivingChannel);
+            _consumer.Received += (model, ea) => { OnDataRecieved?.Invoke(this, ea); };
+            _receivingChannel.BasicConsume(_config.RecieveChannel,
                 true,
-                consumer);
+                _consumer);
         }
 
 
@@ -96,7 +94,7 @@ namespace livil_mq_microservice.RabibitMq
         public void PushMessageToQueue<T>(T message)
         {
             if (string.IsNullOrEmpty(_config.SenderChannel)) throw new ArgumentNullException(nameof(_config.SenderChannel));
-            using var connection = factory.CreateConnection();
+            using var connection = _factory.CreateConnection();
             using var channel = connection.CreateModel();
             channel.QueueDeclare(_config.SenderChannel, false, false);
             var serialzedMessage = JsonSerializer.Serialize(message);

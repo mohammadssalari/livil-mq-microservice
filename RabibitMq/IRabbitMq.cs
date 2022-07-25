@@ -10,7 +10,7 @@
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="messages"></param>
-        /// <param name="queueName"></param>
+        
         /// <returns></returns>
         void PushMessagesToQueue<T>(IEnumerable<T> messages);
 
@@ -18,7 +18,6 @@
         ///     send a Meesage to the QueName
         /// </summary>
         /// <param name="message"></param>
-        /// <param name="queueName"></param>
         /// <typeparam name="T"></typeparam>
         void PushMessageToQueue<T>(T message);
 

@@ -1,6 +1,5 @@
-﻿using livil_mq_microservice.Models;
-using livil_mq_microservice.RabibitMq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace livil_mq_microservice.Controllers
 {
@@ -8,25 +7,22 @@ namespace livil_mq_microservice.Controllers
     [ApiController]
     public class AnalyzeController : ControllerBase
     {
-        private readonly IRabbitMq _rabbitMq;
-
-        public AnalyzeController(IRabbitMq rabbitMq)
-        {
-            _rabbitMq = rabbitMq;
-        }
+        
 
         /// <summary>
         /// One Word is Taken from the Body of Post and after proccessing its send to the SendChannel of RabbitMQ 
         /// </summary>
-        /// <param name="PostText"></param>
+        /// <param name="postText"></param>
         /// <returns></returns>
-        public IActionResult Post([FromBody] string PostText)
+        [HttpPost]
+        public IActionResult Post([FromBody] string postText)
         {
-            var random = new System.Random();
-            var splittetAndTrimmedText = PostText.Split(new[] {'.', ',', '?'}).Where(x => !string.IsNullOrWhiteSpace(x));
+           Log.Information("Post Method Called");
+            var random = new Random();
+            var splittetAndTrimmedText = postText.Split(new[] {'.', ',', '?'}).Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
             var analyzedText = splittetAndTrimmedText.Skip(random.Next(splittetAndTrimmedText.Count()))
                 .FirstOrDefault();
-            
+            Log.Information("Analyzed Text = {text}",analyzedText);
             return Ok(analyzedText);
 
         }
