@@ -24,7 +24,7 @@ namespace livil_mq_microservice.Controllers
             try
             {
                 _rabbitMq.PushMessageToQueue(rqInputMessage.Content,rqInputMessage.ReplyQueue ?? throw new ArgumentNullException(nameof(rqInputMessage.ReplyQueue)));
-                return Ok();
+                return Ok(rqInputMessage.Content);
             }
             catch (Exception e)
             {

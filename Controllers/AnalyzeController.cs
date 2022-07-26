@@ -10,7 +10,6 @@ namespace livil_mq_microservice.Controllers
     public class AnalyzeController : ControllerBase
     {
         
-
         /// <summary>
         /// One Word is Taken from the Body of Post and after proccessing its send to the SendChannel of RabbitMQ 
         /// </summary>
