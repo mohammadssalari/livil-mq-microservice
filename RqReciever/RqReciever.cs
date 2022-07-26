@@ -9,6 +9,7 @@ using Serilog;
 
 namespace livil_mq_microservice.RqReciever
 {
+    //This Stuff would be normally in a Library so every microservice in the enviorment can use this
     public class RqReciever : BackgroundService
     {
         private readonly IRabbitMq _rabbitMq;

@@ -3,6 +3,8 @@ using Serilog;
 
 namespace livil_mq_microservice.Controllers
 {
+    //This could be done in a minimal Approach API but for readability i chose to do a full blown api
+    
     [Route("api/[controller]")]
     [ApiController]
     public class AnalyzeController : ControllerBase

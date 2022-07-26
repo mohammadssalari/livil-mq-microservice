@@ -7,6 +7,8 @@ using RabbitMQ.Client.Events;
 
 namespace livil_mq_microservice.RabibitMq
 {
+    //This Stuff would be normally in a Library so every microservice in the enviorment can use this
+
     /// <summary>
     ///     a Wrapper fór RabbitMQ
     /// </summary>

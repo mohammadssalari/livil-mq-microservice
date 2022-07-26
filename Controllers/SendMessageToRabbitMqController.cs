@@ -3,6 +3,8 @@ using livil_mq_microservice.RabibitMq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+
+//This could be done in a minimal Approach API but for readability i chose to do a full blown api
 namespace livil_mq_microservice.Controllers
 {
     [Route("api/[controller]")]
