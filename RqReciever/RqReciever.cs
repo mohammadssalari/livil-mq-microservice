@@ -43,9 +43,10 @@ namespace livil_mq_microservice.RqReciever
             //Show the RabbitMqMessage to The Terminal and Log
             Log.Information("Recieved This from RabbitMqChannel Not Parsed: {content}", content);
             Log.Information($"Recieved This from RabbitMqChannel Parsed: {content}", JsonConvert.DeserializeObject<RqInputMessage>(content));
-            SendDataToApi(content);
+            SendDataToApi<RqInputMessage>(content);
         }
 
+        //Send the Serialized Object of Type RQINPUTMESSAGE in content to an API
         private void SendDataToApi(string content)
         {
             var client = new RestClient(_apiconfig.BaseUrl);
@@ -61,5 +62,22 @@ namespace livil_mq_microservice.RqReciever
 
 
         }
+        //Send the Serialized Object of Type <T> in content to an API
+        private void SendDataToApi<T>(string content)
+        {
+            var client = new RestClient(_apiconfig.BaseUrl);
+            Method _method = Method.Post;
+            var request = new RestRequest(_apiconfig.Resource, _apiconfig.MyMethodType);
+            var sendmessage = JsonConvert.DeserializeObject<T>(content);
+            request.AddBody(sendmessage);
+            var res = client.PostAsync(request);
+            if (res.Result.IsSuccessful)
+                Log.Information("Sent Data to APi Successful");
+            else
+                Log.Fatal("Sending Data to Api Unsuccessful");
+
+
+        }
+
     }
 }

@@ -10,7 +10,7 @@ namespace livil_mq_microservice.Controllers
     public class SendMessageToRabbitMqController : ControllerBase
     {
         private readonly IRabbitMq _rabbitMq;
-
+        //The RabbitMq Dependency will be injected here
         public SendMessageToRabbitMqController(IRabbitMq rabbitMq)
         {
             _rabbitMq = rabbitMq;

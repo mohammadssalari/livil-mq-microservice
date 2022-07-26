@@ -22,7 +22,7 @@
         void PushMessageToQueue<T>(T message);
 
         /// <summary>
-        /// 
+        /// sends a message to the queue with the name queuename
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="message"></param>
