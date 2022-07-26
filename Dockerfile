@@ -3,7 +3,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
-
+#This is for x86/x64 Architecture if you wanna build for arm this has to be changed
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["livil-mq-microservice/livil-mq-microservice.csproj", "livil-mq-microservice/"]
