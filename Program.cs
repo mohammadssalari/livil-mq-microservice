@@ -1,3 +1,4 @@
+using System.Reflection;
 using livil_mq_microservice.Models;
 using livil_mq_microservice.RabibitMq;
 using Microsoft.Extensions.Hosting.WindowsServices;
@@ -41,8 +42,10 @@ namespace livil_mq_microservice
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(c=>c.SwaggerDoc("v1",
+            builder.Services.AddSwaggerGen( c=>c.SwaggerDoc("v1",
                 new OpenApiInfo(){Title = "TestApi with RabbitMqIntegrations",Version = "v1"}));
+
+         
 
             var app = builder.Build();
 
