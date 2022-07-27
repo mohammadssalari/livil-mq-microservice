@@ -10,6 +10,8 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - 5208:5208
+    depends_on:
+      - "rabbitmq" 
 
   rabbitmq: # login guest:guest
     image: rabbitmq:3-management
